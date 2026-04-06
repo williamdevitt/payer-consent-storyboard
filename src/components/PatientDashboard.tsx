@@ -21,6 +21,8 @@ import {
   Divider,
   rem,
   ThemeIcon,
+  Tabs,
+  Code,
 } from "@mantine/core";
 import { IconHeartbeat, IconUsers } from "@tabler/icons-react";
 import {
@@ -28,6 +30,7 @@ import {
   IconHistory,
   IconApi,
   IconAlertCircle,
+  IconCode,
 } from "@tabler/icons-react";
 //
 const storyText = `
@@ -42,6 +45,146 @@ The dashboard is powered by three registries:
 
 Use the dashboard below to explore how consent data, prior payer history, and FHIR endpoints can be accessed and visualized for patients in New York State. This interface is designed to tell the story of how these registries work together to support seamless, secure, and patient-centered health information exchange.
 `;
+
+// Technical Details component
+function TechnicalDetails() {
+  const endpoints = [
+    {
+      name: "Retrieve Payer Consent",
+      url: "https://trnt3moht1.execute-api.us-east-1.amazonaws.com/dev/retrieve-payer-consent",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer <JWT_TOKEN>",
+      },
+      bodies: [
+        {
+          label: "By Demographics",
+          body: {
+            first_name: "Danny",
+            last_name: "Hanson",
+            dob: "20081122",
+            address: {
+              line1: "",
+              line2: "",
+              city: "Hamburg",
+              state: "NY",
+              postal_code: "14075",
+            },
+          },
+        },
+        {
+          label: "By QE + Source + MRN",
+          body: {
+            qe: "GRRHIO",
+            source: "UMMC",
+            mrn: "5146901",
+          },
+        },
+      ],
+    },
+    {
+      name: "Get Prior Payers",
+      url: "https://trnt3moht1.execute-api.us-east-1.amazonaws.com/dev/get-prior-payers",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer <JWT_TOKEN>",
+      },
+      bodies: [
+        {
+          label: "By Demographics",
+          body: {
+            first_name: "Danny",
+            last_name: "Hanson",
+            dob: "20081122",
+            address: {
+              line1: "",
+              line2: "",
+              city: "Hamburg",
+              state: "NY",
+              postal_code: "14075",
+            },
+          },
+        },
+        {
+          label: "By QE + Source + MRN",
+          body: {
+            qe: "GRRHIO",
+            source: "UMMC",
+            mrn: "5146901",
+          },
+        },
+      ],
+    },
+    {
+      name: "Get FHIR Endpoints",
+      url: "https://trnt3moht1.execute-api.us-east-1.amazonaws.com/dev/get-fhir-endpoints",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer <JWT_TOKEN>",
+      },
+      bodies: [
+        {
+          label: "By Payer ID",
+          body: { payerId: "example_payer_id" },
+        },
+      ],
+    },
+  ];
+
+  return (
+    <Container size="md" py="xl">
+      <Title order={2} mb="lg" ta="center">
+        Technical Details
+      </Title>
+      <Stack gap="lg">
+        {endpoints.map((endpoint, idx) => (
+          <Paper key={idx} shadow="md" p="lg" radius="md" withBorder>
+            <Group gap="xs" mb="sm">
+              <ThemeIcon color="blue" size={32} radius="xl" variant="light">
+                <IconCode size={20} />
+              </ThemeIcon>
+              <Title order={4}>{endpoint.name}</Title>
+            </Group>
+            <Grid gap={4}>
+              <Grid.Col span={6}>
+                <Text fw={500}>URL:</Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Code>{endpoint.url}</Code>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text fw={500}>Method:</Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text>{endpoint.method}</Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Text fw={500}>Headers:</Text>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Code block>{JSON.stringify(endpoint.headers, null, 2)}</Code>
+              </Grid.Col>
+              {endpoint.bodies.map((bodyItem, bodyIdx) => (
+                <>
+                  <Grid.Col span={6}>
+                    <Text fw={500}>Body ({bodyItem.label}):</Text>
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                    <Code block>{JSON.stringify(bodyItem.body, null, 2)}</Code>
+                  </Grid.Col>
+                </>
+              ))}
+            </Grid>
+          </Paper>
+        ))}
+      </Stack>
+    </Container>
+  );
+}
+
 // Patient demographics card component (top-level only)
 function PatientDemographicsCard({ patient }: { patient: any }) {
   if (!patient) return null;
@@ -453,199 +596,218 @@ function PatientDashboard() {
           </Text>
         </Paper>
 
-        <Paper
-          shadow="md"
-          p="xl"
-          mb="md"
-          radius="lg"
-          withBorder
-          style={{
-            background: "linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%)",
-            border: "1.5px solid #dbeafe",
-            boxShadow: "0 2px 16px 0 #e0e7ff44",
-          }}
-        >
-          <Text
-            size="xl"
-            fw={600}
-            mb={8}
-            style={{
-              color: "#2563eb",
-              letterSpacing: 0.2,
-              textAlign: "center",
-              lineHeight: 1.4,
-            }}
-          >
-            Welcome to the Payer Consent Story Dashboard!
-          </Text>
-          <Text
-            size="md"
-            mb={16}
-            style={{
-              color: "#334155",
-              textAlign: "center",
-              fontStyle: "italic",
-              opacity: 0.85,
-            }}
-          >
-            This application demonstrates the SHIN-NY (New York State Health
-            Information Network) Payer Consent API. The goal is to enable the
-            sharing of patient consent values between payers, easing patient
-            care barriers and improving care coordination.
-          </Text>
-          <Text
-            size="md"
-            mb={8}
-            style={{
-              color: "#0f172a",
-              textAlign: "left",
-              lineHeight: 1.7,
-              background: "rgba(236, 245, 255, 0.5)",
-              borderRadius: 8,
-              padding: "12px 18px",
-              marginBottom: 12,
-            }}
-          >
-            The dashboard is powered by three registries:
-            <br />
-            <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
-              • Payer to Payer Consent Registry:
-            </span>{" "}
-            <span style={{ color: "#334155" }}>
-              The source of truth for patient consent, accessible via API for
-              payers to retrieve the latest consent value.
-            </span>
-            <br />
-            <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
-              • Prior Payers Registry:
-            </span>{" "}
-            <span style={{ color: "#334155" }}>
-              Contains past care records and consent values, sourced from
-              Managed Care Organizations (MCOs).
-            </span>
-            <br />
-            <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
-              • Payer FHIR Endpoint Registry:
-            </span>{" "}
-            <span style={{ color: "#334155" }}>
-              Lists all known FHIR endpoints for payers, enabling programmatic
-              data exchange.
-            </span>
-          </Text>
-          <Text
-            size="md"
-            style={{
-              color: "#334155",
-              textAlign: "left",
-              lineHeight: 1.7,
-              marginTop: 8,
-            }}
-          >
-            Use the dashboard below to explore how consent data, prior payer
-            history, and FHIR endpoints can be accessed and visualized for
-            patients in New York State. This interface is designed to tell the
-            story of how these registries work together to support seamless,
-            secure, and patient-centered health information exchange.
-          </Text>
-        </Paper>
+        <Tabs defaultValue="dashboard">
+          <Tabs.List mb="lg" justify="center">
+            <Tabs.Tab value="dashboard" leftSection={<IconApi size={16} />}>
+              Dashboard
+            </Tabs.Tab>
+            <Tabs.Tab value="technical" leftSection={<IconCode size={16} />}>
+              Technical Details
+            </Tabs.Tab>
+          </Tabs.List>
 
-        <Paper
-          shadow="md"
-          p="md"
-          mb="md"
-          radius="md"
-          withBorder
-          style={{ background: "#f1f5f9" }}
-        >
-          <Group gap="xs" align="center" mb="sm">
-            <ThemeIcon color="indigo" size={32} radius="xl" variant="light">
-              <IconUsers size={20} />
-            </ThemeIcon>
-            <Text fw={700} size="lg" c="indigo.8">
-              Select a patient to begin:
-            </Text>
-          </Group>
-          <Select
-            data={patients}
-            value={selectedPatient}
-            onChange={setSelectedPatient}
-            placeholder="Choose patient"
-            aria-label="Patient selector"
-            size="md"
-            searchable
-            styles={{ dropdown: { zIndex: 9999 } }}
-          />
-          {selectedPatient && (
-            <>
-              <PatientDemographicsCard
-                patient={patients.find((p) => p.value === selectedPatient)}
-              />
-              <Space h="md" />
-              <Group mt="md" gap="md" justify="center">
-                <Button
-                  leftSection={<IconFileText size={18} />}
-                  onClick={() => handleAction("get-consent")}
-                  color="blue"
-                  variant="gradient"
-                  gradient={{ from: "blue", to: "teal", deg: 90 }}
-                  radius="xl"
-                  size="md"
-                  style={{ minWidth: 180 }}
-                >
-                  Get Current Consent
-                </Button>
-                <Button
-                  leftSection={<IconHistory size={18} />}
-                  onClick={() => handleAction("get-prior-payers")}
-                  color="grape"
-                  variant="gradient"
-                  gradient={{ from: "grape", to: "indigo", deg: 90 }}
-                  radius="xl"
-                  size="md"
-                  style={{ minWidth: 180 }}
-                >
-                  Get Prior Payers
-                </Button>
-                <Button
-                  leftSection={<IconApi size={18} />}
-                  onClick={() => handleAction("get-fhir-endpoints")}
-                  color="teal"
-                  variant="gradient"
-                  gradient={{ from: "teal", to: "cyan", deg: 90 }}
-                  radius="xl"
-                  size="md"
-                  style={{ minWidth: 180 }}
-                >
-                  Get FHIR Endpoints
-                </Button>
+          <Tabs.Panel value="dashboard">
+            <Paper
+              shadow="md"
+              p="xl"
+              mb="md"
+              radius="lg"
+              withBorder
+              style={{
+                background:
+                  "linear-gradient(120deg, #f8fafc 60%, #e0e7ff 100%)",
+                border: "1.5px solid #dbeafe",
+                boxShadow: "0 2px 16px 0 #e0e7ff44",
+              }}
+            >
+              <Text
+                size="xl"
+                fw={600}
+                mb={8}
+                style={{
+                  color: "#2563eb",
+                  letterSpacing: 0.2,
+                  textAlign: "center",
+                  lineHeight: 1.4,
+                }}
+              >
+                Welcome to the Payer Consent Story Dashboard!
+              </Text>
+              <Text
+                size="md"
+                mb={16}
+                style={{
+                  color: "#334155",
+                  textAlign: "center",
+                  fontStyle: "italic",
+                  opacity: 0.85,
+                }}
+              >
+                This application demonstrates the SHIN-NY (New York State Health
+                Information Network) Payer Consent API. The goal is to enable
+                the sharing of patient consent values between payers, easing
+                patient care barriers and improving care coordination.
+              </Text>
+              <Text
+                size="md"
+                mb={8}
+                style={{
+                  color: "#0f172a",
+                  textAlign: "left",
+                  lineHeight: 1.7,
+                  background: "rgba(236, 245, 255, 0.5)",
+                  borderRadius: 8,
+                  padding: "12px 18px",
+                  marginBottom: 12,
+                }}
+              >
+                The dashboard is powered by three registries:
+                <br />
+                <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
+                  • Payer to Payer Consent Registry:
+                </span>{" "}
+                <span style={{ color: "#334155" }}>
+                  The source of truth for patient consent, accessible via API
+                  for payers to retrieve the latest consent value.
+                </span>
+                <br />
+                <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
+                  • Prior Payers Registry:
+                </span>{" "}
+                <span style={{ color: "#334155" }}>
+                  Contains past care records and consent values, sourced from
+                  Managed Care Organizations (MCOs).
+                </span>
+                <br />
+                <span style={{ color: "#0ea5e9", fontWeight: 600 }}>
+                  • Payer FHIR Endpoint Registry:
+                </span>{" "}
+                <span style={{ color: "#334155" }}>
+                  Lists all known FHIR endpoints for payers, enabling
+                  programmatic data exchange.
+                </span>
+              </Text>
+              <Text
+                size="md"
+                style={{
+                  color: "#334155",
+                  textAlign: "left",
+                  lineHeight: 1.7,
+                  marginTop: 8,
+                }}
+              >
+                Use the dashboard below to explore how consent data, prior payer
+                history, and FHIR endpoints can be accessed and visualized for
+                patients in New York State. This interface is designed to tell
+                the story of how these registries work together to support
+                seamless, secure, and patient-centered health information
+                exchange.
+              </Text>
+            </Paper>
+
+            <Paper
+              shadow="md"
+              p="md"
+              mb="md"
+              radius="md"
+              withBorder
+              style={{ background: "#f1f5f9" }}
+            >
+              <Group gap="xs" align="center" mb="sm">
+                <ThemeIcon color="indigo" size={32} radius="xl" variant="light">
+                  <IconUsers size={20} />
+                </ThemeIcon>
+                <Text fw={700} size="lg" c="indigo.8">
+                  Select a patient to begin:
+                </Text>
               </Group>
-            </>
-          )}
-        </Paper>
+              <Select
+                data={patients}
+                value={selectedPatient}
+                onChange={setSelectedPatient}
+                placeholder="Choose patient"
+                aria-label="Patient selector"
+                size="md"
+                searchable
+                styles={{ dropdown: { zIndex: 9999 } }}
+              />
+              {selectedPatient && (
+                <>
+                  <PatientDemographicsCard
+                    patient={patients.find((p) => p.value === selectedPatient)}
+                  />
+                  <Space h="md" />
+                  <Group mt="md" gap="md" justify="center">
+                    <Button
+                      leftSection={<IconFileText size={18} />}
+                      onClick={() => handleAction("get-consent")}
+                      color="blue"
+                      variant="gradient"
+                      gradient={{ from: "blue", to: "teal", deg: 90 }}
+                      radius="xl"
+                      size="md"
+                      style={{ minWidth: 180 }}
+                    >
+                      Get Current Consent
+                    </Button>
+                    <Button
+                      leftSection={<IconHistory size={18} />}
+                      onClick={() => handleAction("get-prior-payers")}
+                      color="grape"
+                      variant="gradient"
+                      gradient={{ from: "grape", to: "indigo", deg: 90 }}
+                      radius="xl"
+                      size="md"
+                      style={{ minWidth: 180 }}
+                    >
+                      Get Prior Payers
+                    </Button>
+                    <Button
+                      leftSection={<IconApi size={18} />}
+                      onClick={() => handleAction("get-fhir-endpoints")}
+                      color="teal"
+                      variant="gradient"
+                      gradient={{ from: "teal", to: "cyan", deg: 90 }}
+                      radius="xl"
+                      size="md"
+                      style={{ minWidth: 180 }}
+                    >
+                      Get FHIR Endpoints
+                    </Button>
+                  </Group>
+                </>
+              )}
+            </Paper>
 
-        {loading && <Loader size="lg" />}
-        {!loading &&
-          result &&
-          resultType === "get-consent" &&
-          formatConsent(result)}
-        {!loading &&
-          result &&
-          resultType === "get-prior-payers" &&
-          formatPriorPayers(result)}
-        {!loading &&
-          result &&
-          resultType === "get-fhir-endpoints" &&
-          formatFhirEndpoints(result)}
-        {!loading && result && result.error && (
-          <Alert
-            icon={<IconAlertCircle size={18} />}
-            title="Error"
-            color="red"
-            mt="md"
-          >
-            {result.error}
-          </Alert>
-        )}
+            {loading && <Loader size="lg" />}
+            {!loading &&
+              result &&
+              resultType === "get-consent" &&
+              formatConsent(result)}
+            {!loading &&
+              result &&
+              resultType === "get-prior-payers" &&
+              formatPriorPayers(result)}
+            {!loading &&
+              result &&
+              resultType === "get-fhir-endpoints" &&
+              formatFhirEndpoints(result)}
+            {!loading && result && result.error && (
+              <Alert
+                icon={<IconAlertCircle size={18} />}
+                title="Error"
+                color="red"
+                mt="md"
+              >
+                {result.error}
+              </Alert>
+            )}
+          </Tabs.Panel>
+
+          <Tabs.Panel value="technical">
+            <TechnicalDetails />
+          </Tabs.Panel>
+        </Tabs>
       </Container>
     </div>
   );
