@@ -23,6 +23,7 @@ import {
   ThemeIcon,
   Tabs,
   Code,
+  Textarea,
 } from "@mantine/core";
 import { IconHeartbeat, IconUsers } from "@tabler/icons-react";
 import {
@@ -131,6 +132,13 @@ function TechnicalDetails() {
           body: { payerId: "example_payer_id" },
         },
       ],
+      connectionRequest: {
+        field: "connectionMessage",
+        label: "Connection Request Message",
+        hint: "Required: Include your connection request message when requesting access to FHIR endpoints",
+        defaultMessage:
+          "As a payer (Your Insurance Company Name), we are interested in connecting to your FHIR endpoints for payer-to-payer exchange of claims and clinical data. Please contact us at interop@yourpayer.com or +1-555-123-4567 to initiate the connection process. Visit our interoperability portal at TicketingPortal.YourPayer.com to track the request status.",
+      },
     },
   ];
 
@@ -190,6 +198,36 @@ function TechnicalDetails() {
                   </Grid.Col>
                 </>
               ))}
+              {endpoint.connectionRequest && (
+                <>
+                  <Grid.Col span={12}>
+                    <Divider
+                      my="sm"
+                      label={endpoint.connectionRequest.label}
+                      labelPosition="left"
+                    />
+                  </Grid.Col>
+                  <Grid.Col span={12}>
+                    <Text fw={500} mb="xs">
+                      {endpoint.connectionRequest.label} *
+                    </Text>
+                    <Text fw={400} size="sm" c="gray.6" mb="sm">
+                      {endpoint.connectionRequest.hint}
+                    </Text>
+                    <Textarea
+                      placeholder="Enter your connection request message here..."
+                      defaultValue={endpoint.connectionRequest.defaultMessage}
+                      minRows={6}
+                      maxRows={12}
+                      required
+                      style={{
+                        fontFamily: "monospace",
+                        fontSize: 12,
+                      }}
+                    />
+                  </Grid.Col>
+                </>
+              )}
             </Grid>
           </Paper>
         ))}
@@ -253,6 +291,8 @@ const patients = [
         postal_code: "14075",
       },
     },
+    story:
+      "Danny is a 16-year-old high school student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents recognize the importance of seamless care coordination, especially as he transitions between school and his pediatric endocrinologist. They have actively consented to share his medical records across all his healthcare providers to ensure continuity of care and prevent any gaps in his treatment. Danny's health records are accessible across his insurance plan and participating providers, enabling timely clinical decision-making and support for his active lifestyle.",
   },
   {
     label: "Maria Lopez",
@@ -269,6 +309,8 @@ const patients = [
         postal_code: "14201",
       },
     },
+    story:
+      "Maria is a 31-year-old teacher and mother of one child. Approximately one year ago, she was diagnosed with stage 3 metastatic breast cancer and is currently undergoing chemotherapy, with radiation therapy planned to follow. Due to her illness, Maria took a leave of absence from her teaching position, resulting in a transition from employer-sponsored insurance to Medicaid coverage. As part of this transition, she now has care managers associated with both her former payer and her current Medicaid plan. Maria has significant concerns about privacy and prefers to limit the sharing of her sensitive cancer treatment records. She has not consented to share her medical records across plans, wanting to maintain greater control over who has access to her diagnosis and treatment details. However, this decision creates coordination challenges for her care team.",
   },
   {
     label: "James Smith",
@@ -285,8 +327,48 @@ const patients = [
         postal_code: "14620",
       },
     },
+    story:
+      "James is a 45-year-old entrepreneur managing multiple chronic conditions including hypertension and Type 2 diabetes. His health care situation is complex, with frequent changes in insurance coverage as his business navigates different healthcare plans. Notably, James frequently changes his mind about sharing his medical records. At times, he strongly advocates for comprehensive data sharing to ensure his cardiologist and endocrinologist have complete information. Other times, concerns about data privacy lead him to restrict access. This inconsistent consent status creates ongoing challenges for care coordination and requires his healthcare providers to continuously verify his latest preferences before accessing or sharing his records.",
   },
 ];
+
+// Patient background story component
+function PatientStoryCard({ patient }: { patient: any }) {
+  if (!patient || !patient.story) return null;
+  return (
+    <Paper
+      shadow="sm"
+      p="md"
+      mt="md"
+      radius="md"
+      withBorder
+      style={{
+        background: "linear-gradient(135deg, #faf9f7 0%, #f3f0eb 100%)",
+        borderColor: "#d4af37",
+        borderWidth: 2,
+      }}
+    >
+      <Group gap="xs" mb="md">
+        <ThemeIcon color="amber" size={32} radius="xl" variant="light">
+          <IconHeartbeat size={20} />
+        </ThemeIcon>
+        <Title order={5} style={{ color: "#92400e" }}>
+          About {patient.demographics.first_name}
+        </Title>
+      </Group>
+      <Text
+        style={{
+          color: "#44403c",
+          lineHeight: 1.7,
+          fontSize: 14,
+          fontStyle: "italic",
+        }}
+      >
+        {patient.story}
+      </Text>
+    </Paper>
+  );
+}
 
 function PatientDashboard() {
   const theme = useMantineTheme();
@@ -747,6 +829,9 @@ function PatientDashboard() {
               {selectedPatient && (
                 <>
                   <PatientDemographicsCard
+                    patient={patients.find((p) => p.value === selectedPatient)}
+                  />
+                  <PatientStoryCard
                     patient={patients.find((p) => p.value === selectedPatient)}
                   />
                   <Space h="md" />
