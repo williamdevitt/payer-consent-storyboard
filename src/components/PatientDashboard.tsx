@@ -277,24 +277,6 @@ function PatientDemographicsCard({ patient }: { patient: any }) {
 
 const patients = [
   {
-    label: "Danny Hanson",
-    value: "danny",
-    demographics: {
-      first_name: "Danny",
-      last_name: "Hanson",
-      dob: "20081122",
-      address: {
-        line1: "6144 Jeffrey Station",
-        line2: "",
-        city: "Hamburg",
-        state: "NY",
-        postal_code: "14075",
-      },
-    },
-    story:
-      "Danny is a 26-year-old PhD student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents recognize the importance of seamless care coordination, especially as he transitions between school and his pediatric endocrinologist. They have actively consented to share his medical records across all his healthcare providers to ensure continuity of care and prevent any gaps in his treatment. Danny's health records are accessible across his insurance plan and participating providers, enabling timely clinical decision-making and support for his active lifestyle.",
-  },
-  {
     label: "Maria Lopez",
     value: "maria",
     demographics: {
@@ -310,7 +292,25 @@ const patients = [
       },
     },
     story:
-      "Maria is a 31-year-old teacher and mother of one child. Approximately one year ago, she was diagnosed with stage 3 metastatic breast cancer and is currently undergoing chemotherapy, with radiation therapy planned to follow. Due to her illness, Maria took a leave of absence from her teaching position, resulting in a transition from employer-sponsored insurance to Medicaid coverage. As part of this transition, she now has care managers associated with both her former payer and her current Medicaid plan. Maria has significant concerns about privacy and prefers to limit the sharing of her sensitive cancer treatment records. She has not consented to share her medical records across plans, wanting to maintain greater control over who has access to her diagnosis and treatment details. However, this decision creates coordination challenges for her care team.",
+      "Maria is a 31-year-old teacher and mother of one child. Approximately one year ago, she was diagnosed with stage 3 metastatic breast cancer and is currently undergoing chemotherapy, with radiation therapy planned to follow. Due to her illness, Maria took a leave of absence from her teaching position, resulting in a transition from employer-sponsored insurance to Medicaid coverage. As part of this transition, she now has care managers associated with both her former payer and her current Medicaid plan. Maria recognizes that her complex illness requires seamless coordination between multiple specialists, oncologists, and care teams. She has actively consented to share her medical records across all healthcare providers, enabling her treatment team to have complete access to her comprehensive medical history, medication records, and clinical progress. This willing consent ensures that her oncologist can coordinate effectively with her primary care physician and care managers, preventing medication conflicts, avoiding duplicate tests, and providing the most effective, personalized care possible during her challenging treatment journey.",
+  },
+  {
+    label: "Danny Hanson",
+    value: "danny",
+    demographics: {
+      first_name: "Danny",
+      last_name: "Hanson",
+      dob: "20081122",
+      address: {
+        line1: "6144 Jeffrey Station",
+        line2: "",
+        city: "Hamburg",
+        state: "NY",
+        postal_code: "14075",
+      },
+    },
+    story:
+      "Danny is a 26-year-old PhD student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents are extremely protective of his privacy and have strong concerns about sharing his medical records across different healthcare providers. They have not consented to share his medical records, preferring to maintain strict control over who has access to his sensitive health information. This decision creates coordination challenges for his care team, who must work harder to ensure continuity of care without comprehensive record access.",
   },
   {
     label: "James Smith",
@@ -622,13 +622,13 @@ function PatientDashboard() {
           setResult(consentData);
         } catch (err) {
           // Fallback: mock consent data based on patient
-          let consentValue = "YES";
+          let consentValue = "NO";
           let recordedByPayer = "MEDICAID";
           let payerId = "MEDICAID";
           let submitterName = "New York State Department of Health";
 
           if (patient?.value === "maria") {
-            consentValue = "NO";
+            consentValue = "YES";
             recordedByPayer = "BLUE CROSS BLUE SHIELD";
             payerId = "BCBSNY";
             submitterName = "Blue Cross Blue Shield of New York";
