@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   getCurrentConsent,
   getPriorPayers,
@@ -425,6 +425,13 @@ function PatientDashboard() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
   const [resultType, setResultType] = useState<string | null>(null);
+
+  // Clear results when patient changes
+  useEffect(() => {
+    setResult(null);
+    setResultType(null);
+    setLoading(false);
+  }, [selectedPatient]);
 
   // Helper functions
   function formatConsent(consent: any) {
