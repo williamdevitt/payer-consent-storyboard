@@ -623,35 +623,44 @@ function PatientDashboard() {
         } catch (err) {
           // Fallback: mock consent data based on patient
           let consentValue = "YES";
+          let recordedByPayer = "MEDICAID";
+          let payerId = "MEDICAID";
+          let submitterName = "New York State Department of Health";
+
           if (patient?.value === "maria") {
             consentValue = "NO";
+            recordedByPayer = "BLUE CROSS BLUE SHIELD";
+            payerId = "BCBSNY";
+            submitterName = "Blue Cross Blue Shield of New York";
           } else if (patient?.value === "james") {
-            // James changes his mind - show mixed/indeterminate status
-            consentValue = "YES";
+            consentValue = "VARIES";
+            recordedByPayer = "AETNA";
+            payerId = "AETNA";
+            submitterName = "Aetna Health of New York";
           }
 
           setResult({
             latest_consent: {
               consent_value: consentValue,
-              recorded_by: "MOCK PAYER",
-              payer_id: "MOCK123",
-              submitter_long_name: "Mock Submitter",
+              recorded_by: recordedByPayer,
+              payer_id: payerId,
+              submitter_long_name: submitterName,
               updated_timestamp: "2026-04-06T12:00:00Z",
               first_name: patient?.demographics.first_name,
               last_name: patient?.demographics.last_name,
               dob: patient?.demographics.dob,
               address: patient?.demographics.address,
-              mrn: "MOCKMRN123",
-              source: "Mock Source",
-              consent_source: "Mock",
+              mrn: "5146901",
+              source: "NYMC",
+              consent_source: "NYSHIRA",
               prior_payers: [
                 {
-                  payer: "MOCK PRIOR 1",
+                  payer: "BLUE CROSS BLUE SHIELD",
                   coverage_start: "20240101",
                   coverage_end: "20250101",
                 },
                 {
-                  payer: "MOCK PRIOR 2",
+                  payer: "UNITEDHEALTHCARE",
                   coverage_start: "20230101",
                   coverage_end: "20240101",
                 },

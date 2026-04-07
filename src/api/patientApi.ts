@@ -19,9 +19,9 @@ export async function getPriorPayers(patientId: string) {
     priorPayers: [
       {
         memberId: "MEM789",
-        payerName: "OLDPAYER3",
-        payerId: "OP3",
-        fhirEndpoints: ["https://oldpayer3.fhir.ny.gov/Patient"],
+        payerName: "MEDICAID",
+        payerId: "MC",
+        fhirEndpoints: ["https://medicaid.fhir.ny.gov/Patient"],
         coverageStart: "20180101",
         coverageEnd: "20190101",
         groupNumber: "GRP3",
