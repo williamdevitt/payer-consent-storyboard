@@ -292,7 +292,7 @@ const patients = [
       },
     },
     story:
-      "Danny is a 16-year-old high school student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents recognize the importance of seamless care coordination, especially as he transitions between school and his pediatric endocrinologist. They have actively consented to share his medical records across all his healthcare providers to ensure continuity of care and prevent any gaps in his treatment. Danny's health records are accessible across his insurance plan and participating providers, enabling timely clinical decision-making and support for his active lifestyle.",
+      "Danny is a 26-year-old PhD student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents recognize the importance of seamless care coordination, especially as he transitions between school and his pediatric endocrinologist. They have actively consented to share his medical records across all his healthcare providers to ensure continuity of care and prevent any gaps in his treatment. Danny's health records are accessible across his insurance plan and participating providers, enabling timely clinical decision-making and support for his active lifestyle.",
   },
   {
     label: "Maria Lopez",
