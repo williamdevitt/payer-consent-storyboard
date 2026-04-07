@@ -391,8 +391,22 @@ function PatientDashboard() {
             <Text fw={500}>Consent Value:</Text>
           </Grid.Col>
           <Grid.Col span={6}>
-            <Text c={c.consent_value === "YES" ? "green.7" : "red.7"}>
+            <Text
+              c={
+                c.consent_value === "YES"
+                  ? "green.7"
+                  : c.consent_value === "NO"
+                    ? "red.7"
+                    : "orange.7"
+              }
+              fw={600}
+            >
               {c.consent_value}
+              {c.consent_value === "VARIES" && (
+                <Text size="xs" fw={400} c="gray.6" mt="xs">
+                  (Consent status changes frequently)
+                </Text>
+              )}
             </Text>
           </Grid.Col>
           <Grid.Col span={6}>
@@ -607,10 +621,18 @@ function PatientDashboard() {
           }
           setResult(consentData);
         } catch (err) {
-          // Fallback: mock consent data
+          // Fallback: mock consent data based on patient
+          let consentValue = "YES";
+          if (patient?.value === "maria") {
+            consentValue = "NO";
+          } else if (patient?.value === "james") {
+            // James changes his mind - show mixed/indeterminate status
+            consentValue = "YES";
+          }
+
           setResult({
             latest_consent: {
-              consent_value: "YES",
+              consent_value: consentValue,
               recorded_by: "MOCK PAYER",
               payer_id: "MOCK123",
               submitter_long_name: "Mock Submitter",
