@@ -139,6 +139,19 @@ function TechnicalDetails() {
       <Title order={2} mb="lg" ta="center">
         Technical Details
       </Title>
+      <Group justify="center" mb="lg">
+        <Button
+          component="a"
+          href="http://payer-consent-swagger-bucket-development.s3-website-us-east-1.amazonaws.com/#/default/get_retrieve_payer_consent"
+          target="_blank"
+          rel="noopener noreferrer"
+          leftSection={<IconApi size={16} />}
+          variant="outline"
+          color="blue"
+        >
+          View API Documentation (Swagger)
+        </Button>
+      </Group>
       <Stack gap="lg">
         {endpoints.map((endpoint, idx) => (
           <Paper key={idx} shadow="md" p="lg" radius="md" withBorder>
