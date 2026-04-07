@@ -633,7 +633,7 @@ function PatientDashboard() {
             payerId = "BCBSNY";
             submitterName = "Blue Cross Blue Shield of New York";
           } else if (patient?.value === "james") {
-            consentValue = "VARIES";
+            consentValue = "YES";
             recordedByPayer = "AETNA";
             payerId = "AETNA";
             submitterName = "Aetna Health of New York";
