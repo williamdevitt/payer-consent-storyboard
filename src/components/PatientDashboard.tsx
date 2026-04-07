@@ -359,7 +359,7 @@ const patients = [
       },
     },
     story:
-      "Danny is a 26-year-old PhD student who has been managing Type 1 diabetes for the past 8 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. Danny's parents are extremely protective of his privacy and have strong concerns about sharing his medical records across different healthcare providers. They have not consented to share his medical records, preferring to maintain strict control over who has access to his sensitive health information. This decision creates coordination challenges for his care team, who must work harder to ensure continuity of care without comprehensive record access.",
+      "Danny is a 26-year-old PhD student who has been managing Type 1 diabetes for the past 18 years. His condition is well-controlled through consistent insulin therapy and regular monitoring. As an independent adult, Danny places tremendous value on his personal privacy and has strong concerns about sharing his medical records across different healthcare providers. He has not consented to share his medical records, preferring to maintain strict control over who has access to his sensitive health information. This decision creates coordination challenges for his care team, who must work harder to ensure continuity of care without comprehensive record access.",
   },
   {
     label: "James Smith",
