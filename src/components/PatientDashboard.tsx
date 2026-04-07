@@ -140,6 +140,55 @@ function TechnicalDetails() {
           "As a payer (Your Insurance Company Name), we are interested in connecting to your FHIR endpoints for payer-to-payer exchange of claims and clinical data. Please contact us at interop@yourpayer.com or +1-555-123-4567 to initiate the connection process. Visit our interoperability portal at TicketingPortal.YourPayer.com to track the request status.",
       },
     },
+    {
+      name: "Set New Consent",
+      url: "https://trnt3moht1.execute-api.us-east-1.amazonaws.com/dev/create-consent",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer <JWT_TOKEN>",
+      },
+      bodies: [
+        {
+          label: "Create Consent Record",
+          body: {
+            body: {
+              qe: "GRRHIO",
+              source: "UMMC",
+              mrn: "5146901",
+              first_name: "Danny",
+              last_name: "Hanson",
+              dob: "20081122",
+              address: {
+                line1: "6144 Jeffrey Station",
+                line2: "",
+                city: "Hamburg",
+                state: "NY",
+                zip: "14075",
+                country: "USA",
+                phone: "716-696-2977",
+              },
+              member_id: "MEM789",
+              consent_value: "YES",
+              consent_source: "EPIC",
+              recorded_by: "admin",
+              payer_id: "MEDICAID",
+              submitter_long_name: "New York eHealth Collaborative",
+              submitter_oid: "2.16.840.1.113883.3.2074.1",
+              prior_payers: [
+                {
+                  payer: "MEDICAID",
+                  member_id: "MEM789",
+                  group_number: "GRP3",
+                  coverage_start: "20180101",
+                  coverage_end: "20190101",
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
   ];
 
   return (
